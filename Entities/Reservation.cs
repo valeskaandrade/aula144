@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
+using aula144TratExcecaoParte3.Entities.Exceptions;
 
-namespace aula142TratExcecao.Entities
+namespace aula144TratExcecaoParte3.Entities
 {
     class Reservation
     {
@@ -17,12 +18,20 @@ namespace aula142TratExcecao.Entities
         public Reservation(int roomNumber, DateTime checkin, DateTime checkout)
         {
             RoomNumber = roomNumber;
+            if (checkout <= checkin)
+            { throw new DomainException("Data saída deve ser posterior à entrada"); }
             Checkin = checkin;
             Checkout = checkout;
         }
 
         public void UpdateDates(DateTime newCheckin, DateTime newCheckout)
         {
+            if (newCheckout <= newCheckin)
+            { throw new DomainException("Data saída deve ser posterior à entrada"); }
+            DateTime now =  DateTime.Now;
+            if (newCheckout <= now || newCheckin <= now)
+            { throw new DomainException("Datas de entrada e saída devem ser posterior à hoje"); }
+
             Checkin = newCheckin;
             Checkout = newCheckout;
         }

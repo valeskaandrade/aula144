@@ -1,37 +1,33 @@
 ﻿using System;
-using aula142TratExcecao.Entities;
+using aula144TratExcecaoParte3.Entities;
+using aula144TratExcecaoParte3.Entities.Exceptions;
 
-namespace aula142TratExcecao
+namespace aula144TratExcecaoParte3
 {
     class Program
     {
         static void Main(string[] args)
         {
-            //aula 142 - Programa de reserva de quarto sem tratamento de exceção 
-
-            Console.WriteLine("Informe os dados da reserva");
-
-            Console.Write("Número do Quarto: ");
-            int roomNumber = int.Parse(Console.ReadLine());
-
-            Console.Write("Data de entrada (dd/MM/yyyy): ");
-            DateTime checkin = DateTime.Parse(Console.ReadLine());
-
-            Console.Write("Data de saída (dd/MM/yyyy): ");
-            DateTime checkout = DateTime.Parse(Console.ReadLine());
-            if (checkout <= checkin)
+            //aula 144 - Programa de reserva de quarto com tratamento de exceção 
+            try
             {
-                Console.WriteLine("Erro na reserva: A data da saída deve ser posterior à entrada");
-            }
-            else
-            {
+                Console.WriteLine("Informe os dados da reserva");
+
+                Console.Write("Número do Quarto: ");
+                int roomNumber = int.Parse(Console.ReadLine());
+
+                Console.Write("Data de entrada (dd/MM/yyyy): ");
+                DateTime checkin = DateTime.Parse(Console.ReadLine());
+
+                Console.Write("Data de saída (dd/MM/yyyy): ");
+                DateTime checkout = DateTime.Parse(Console.ReadLine());
+
                 Reservation reserva;
                 reserva = new Reservation(roomNumber, checkin, checkout);
 
                 Console.WriteLine(reserva.ToString());
                 Console.WriteLine();
-
-
+                
                 Console.WriteLine("Informe os dados da reserva para atualização");
                 Console.Write("Nova Data de entrada (dd/MM/yyyy): ");
 
@@ -39,21 +35,17 @@ namespace aula142TratExcecao
                 Console.Write("Nova Data de saída (dd/MM/yyyy): ");
                 DateTime novoCheckout = DateTime.Parse(Console.ReadLine());
                 DateTime now = DateTime.Now;
-                if (novoCheckin < now || novoCheckout < now)
-                {
-                    Console.WriteLine("Erro na reserva: As novas datas de chegada e saída devem ser posteriores à hoje");
-                }
-                else if (novoCheckout <= novoCheckin)
-                {
-                    Console.WriteLine("Erro na reserva: A data da saída deve ser posterior à entrada");
-                }
-                else
-                {
-                    reserva.UpdateDates(novoCheckin, novoCheckout);
-                    Console.WriteLine(reserva.ToString());
-                }
+                
+                reserva.UpdateDates(novoCheckin, novoCheckout);
+                Console.WriteLine(reserva.ToString());
+                
             }
-
+            catch (FormatException e)
+            { Console.WriteLine(e.Message); }
+            catch (DomainException e)
+            { Console.WriteLine(e.Message); }
+            catch (Exception e)
+            { Console.WriteLine(e.Message); }
 
         }
     }
